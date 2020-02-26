@@ -31,27 +31,40 @@ class TaskController extends Controller
         $task->save();
         Session::flash('success','New task is added');
 
-        return redirect('/home');
+        return redirect('/retrieve');
     } 
 
     public function insert() {
         return view('/insert');
     }
 
-    // public function getData(Request $request,$id ){
-    //     $task = Task::where('subject_id',$id)->get();
-    //     //return $task;
-    //     if(count($task) == 0){
-    //        return view('tasks',['task' =>'','subject_id' => $id]);
-    //     }
-    //    return view('tasks',['task' =>$task,'subject_id' => $task[0]->subject_id]);
-        
-    // }
-
     public function retrieve() 
     {
         $tasks = DB::select('select * from tasks');
+        // dd($tasks);
         return view('home', ['tasks'=>$tasks]);
+    }
+
+    public function home() 
+    {
+        return view('/retrieve');
+    }
+
+    public function edit(Request $request) 
+    {
+        $tasks = Task::find($request->id);
+        // dd($tasks);
+        return view('edit', compact('tasks'));
+    }
+
+    public function update(Request $request)
+    {
+        $tasks = Task::find($request->id);
+        $tasks->tasks = $request->task;
+        $tasks->description = $request->description;
+        $tasks->due = $request->due;
+        $tasks->save();
+        return redirect('/retrieve');
     }
 
 }

@@ -13,7 +13,7 @@
             <input class="input" name="description" type="text" value="" required><br><br>
             <label>Date </label>
             <input class="input" name="due" type="date" value="" required><br><br>
-            <button class="btn btn-primary" name="add" type="submit" value="Add Schedule">Add Schedule</button>
+            <button class="btn btn-primary" name="add" type="submit" >Add Schedule</button>
             <a href="{{route('retrieve')}}"  type="button" class="btn btn-danger">Cancel</a>
         </fieldset>
     </div>

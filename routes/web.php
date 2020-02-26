@@ -17,8 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'TaskController@home')->name('home');
 Route::post('/dashboard', 'TaskController@store')->name('dashboard');
 Route::get('/insert', 'TaskController@insert');
 Route::get('/retrieve', 'TaskController@retrieve')->name('retrieve');
-
+Route::get('/edit/{id?}', 'TaskController@edit');
+Route::post('/update', 'TaskController@update');

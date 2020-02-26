@@ -1,23 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+<center>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Lists of Tasks</div>
+                <div class="card-header"><b>Lists of Tasks</b></div>
                 <div class="card-body">
                     @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
                     </div>
                     @endif
-                    <table>
+                    <table class="table table-hover table-dark">
                         <tr>
-                            <th>Tasks</th>
-                            <th>Description</th>
-                            <th>Due Date</th>
-                            <th>Action</th>
+                            <th scope="col">Tasks</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Action</th>
                         </tr>
                         <tbody>
                             @foreach($tasks as $task)
@@ -25,7 +26,7 @@
                                 <td>{{$task->tasks}}</td>
                                 <td>{{$task->description}}</td>
                                 <td>{{$task->due}}</td>
-                                <td><button type="button" class="btn btn-primary">Edit</button><br>
+                                <td><a href="{{url('edit/'.$task->id)}}" type="button" class="btn btn-primary" >Edit</a>&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-danger">Delete</button></td>
                             </tr>
                             @endforeach
@@ -38,4 +39,5 @@
         </div>
     </div>
 </div>
+</center>
 @endsection
