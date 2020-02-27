@@ -3,70 +3,60 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Task;
-use Carbon\Carbon;
-use DB;
-use Session;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 {
-    public function store(Request $request) 
+    /** @var Task $task */
+    private $task;
+
+    public function __construct(
+        Task $task
+    ) 
+    
     {
-        $validator = Validator::make($request->all(), [
-            'tasks' => 'required',
-            'description' => 'required',
-            'due' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return redirect('/insert')
-                ->withInput()
-                ->withErrors($validator);
-        }
+        $this->task = $task;
+        $this->middleware('auth');
+    }
 
-        $task = new Task([
-            'tasks' => $request->get('tasks'),
-            'description' => $request->get('description'),
-            'due' => Carbon::now()->format('Y-m-d'),
-        ]);
-        $task->save();
-        Session::flash('success','New task is added');
-
-        return redirect('/retrieve');
+    public function store(TaskRequest $request) 
+    {
+        $this->task->insert($request->all());
+        return redirect('home');
     } 
 
     public function insert() {
         return view('/insert');
     }
 
-    public function retrieve() 
-    {
-        $tasks = DB::select('select * from tasks');
-        // dd($tasks);
-        return view('home', ['tasks'=>$tasks]);
-    }
-
     public function home() 
     {
-        return view('/retrieve');
+        $tasks = $this->task->getAll();
+        return view('home', compact('tasks'));
     }
 
     public function edit(Request $request) 
     {
-        $tasks = Task::find($request->id);
-        // dd($tasks);
+        $tasks = $this->task->find($request->id);
         return view('edit', compact('tasks'));
     }
 
     public function update(Request $request)
     {
-        $tasks = Task::find($request->id);
+        $tasks = $this->task->find($request->id);
         $tasks->tasks = $request->task;
         $tasks->description = $request->description;
         $tasks->due = $request->due;
         $tasks->save();
-        return redirect('/retrieve');
+        return redirect('home');
+    }
+
+    public function delete(Request $request)
+    {
+        $tasks = $this->task->find($request->id);
+        $tasks->delete();
+        return redirect()->back();
     }
 
 }
-
-

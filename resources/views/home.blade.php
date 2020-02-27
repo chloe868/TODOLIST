@@ -27,7 +27,7 @@
                                 <td>{{$task->description}}</td>
                                 <td>{{$task->due}}</td>
                                 <td><a href="{{url('edit/'.$task->id)}}" type="button" class="btn btn-primary" >Edit</a>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-danger">Delete</button></td>
+                                <a href="{{url('delete/'.$task->id)}}" type="button" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @endforeach
                         </tbody>
